@@ -32,7 +32,9 @@ Usage:
 This script is designed for automated testing and reporting. All functions are documented for maintainability and extensibility.
 """
 
-import tabulate
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from enl_class import EchonetLiteClient
 import datetime
 from fpdf import FPDF

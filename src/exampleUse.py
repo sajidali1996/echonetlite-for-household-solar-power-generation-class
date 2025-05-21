@@ -1,6 +1,17 @@
+"""
+exampleUse.py: Example usage of EchonetLiteClient
+
+This script demonstrates how to use the EchonetLiteClient to query the operation status of an ECHONET Lite device and print the response.
+"""
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), './src')))
+import enl_class as enl
+
 #using enl_class write an example code to query the operation status of the device
 # and print the response
-import enl_class as enl
 
 if __name__ == "__main__":
     # Create an instance of the EchonetLiteClient
