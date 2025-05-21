@@ -76,7 +76,7 @@ def get_ip_from_credentials(filename='credentials.txt'):
                 return line.strip().split('=', 1)[1]
     raise ValueError('IP not found in credentials file')
 
-def save_mapping_pdf_report(n9e_table, n9f_table, filename):
+def save_mapping_pdf_report(n9e_table, n9f_table, n9e_epc, n9e_resp, n9f_epc, n9f_resp, filename):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=14)
@@ -84,9 +84,15 @@ def save_mapping_pdf_report(n9e_table, n9f_table, filename):
     pdf.set_font("Arial", size=11)
     pdf.cell(0, 10, txt=f"Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True, align='C')
     pdf.ln(8)
+    # Show EPC and response for 0x9E
+    pdf.set_font("Arial", 'B', 11)
+    pdf.cell(0, 8, 'Set Property Map (0x9E) Query/Response:', ln=True)
+    pdf.set_font("Arial", size=10)
+    pdf.multi_cell(0, 7, f"Query EPC: 0x{n9e_epc:02X}\nResponse: {n9e_resp}")
+    pdf.ln(2)
     # Table for 0x9E
     pdf.set_font("Arial", 'B', 12)
-    pdf.cell(0, 10, 'Set Property Map (0x9E)', ln=True)
+    pdf.cell(0, 10, 'Set Property Map (0x9E) Decoded Table', ln=True)
     pdf.set_font("Arial", 'B', 10)
     pdf.cell(40, 10, 'EPC', 1)
     pdf.cell(120, 10, 'Description', 1)
@@ -95,7 +101,6 @@ def save_mapping_pdf_report(n9e_table, n9f_table, filename):
     for row in n9e_table:
         epc = row['EPC']
         desc = row['Description']
-        # Wrap description if too long
         desc_lines = []
         while len(desc) > 60:
             desc_lines.append(desc[:60])
@@ -107,9 +112,15 @@ def save_mapping_pdf_report(n9e_table, n9f_table, filename):
             pdf.cell(120, 10, desc_lines[i], 1)
             pdf.ln()
     pdf.ln(5)
+    # Show EPC and response for 0x9F
+    pdf.set_font("Arial", 'B', 11)
+    pdf.cell(0, 8, 'Get Property Map (0x9F) Query/Response:', ln=True)
+    pdf.set_font("Arial", size=10)
+    pdf.multi_cell(0, 7, f"Query EPC: 0x{n9f_epc:02X}\nResponse: {n9f_resp}")
+    pdf.ln(2)
     # Table for 0x9F
     pdf.set_font("Arial", 'B', 12)
-    pdf.cell(0, 10, 'Get Property Map (0x9F)', ln=True)
+    pdf.cell(0, 10, 'Get Property Map (0x9F) Decoded Table', ln=True)
     pdf.set_font("Arial", 'B', 10)
     pdf.cell(40, 10, 'EPC', 1)
     pdf.cell(120, 10, 'Description', 1)
@@ -139,24 +150,32 @@ def main():
     ]
     n9e_table = []
     n9f_table = []
+    n9e_epc = 0x9E
+    n9f_epc = 0x9F
+    n9e_resp = ''
+    n9f_resp = ''
     for epc, label in property_maps:
         client.send_query(0x62, epc)
-        resp = client.listen_response()
+        resp = client.listen_response(parse=False)
+        resp_hex = resp.hex().upper() if isinstance(resp, (bytes, bytearray)) else ''
         edt = None
-        if 'properties' in resp:
-            for prop in resp['properties']:
+        parsed = client.parse_response(resp) if isinstance(resp, (bytes, bytearray)) else resp
+        if 'properties' in parsed:
+            for prop in parsed['properties']:
                 if prop['epc'] == epc:
                     edt = prop['edt']
                     break
         if epc == 0x9F:
+            n9f_resp = resp_hex
             epc_list = parse_property_map(edt, is_9f=True) if edt else []
             n9f_table = describe_epc_list(epc_list)
         else:
+            n9e_resp = resp_hex
             epc_list = parse_property_map(edt, is_9f=False) if edt else []
             n9e_table = describe_epc_list(epc_list)
     now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     pdf_filename = f'mapping_evaluation_{now}.pdf'
-    save_mapping_pdf_report(n9e_table, n9f_table, pdf_filename)
+    save_mapping_pdf_report(n9e_table, n9f_table, n9e_epc, n9e_resp, n9f_epc, n9f_resp, pdf_filename)
     print(f"PDF report saved as {pdf_filename}")
     client.close()
 
