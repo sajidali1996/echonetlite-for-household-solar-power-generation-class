@@ -126,7 +126,7 @@ def describe_epc_list(epc_list):
     table = []
     for epc in epc_list:
         # epc_list now contains integers, not hex strings
-        desc = EPC_DESCRIPTIONS.get(epc, "Unknown/Reserved")
+        desc = EchonetLiteClient.EPC_DETAILS.get(epc, "Unknown/Reserved")
         table.append({'EPC': f'0x{epc:02X}', 'Description': desc})
     return table
 

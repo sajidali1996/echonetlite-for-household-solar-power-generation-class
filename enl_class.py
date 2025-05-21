@@ -3,7 +3,67 @@ from struct import pack, unpack
 import threading
 import struct
 
+
+
 class EchonetLiteClient:
+    # Detailed EPC descriptions from user-provided table
+    EPC_DETAILS = {
+        0x80: "Operation status",
+        0x81: "Installation location",
+        0x82: "Standard version information",
+        0x83: "Identification number",
+        0x88: "Fault status",
+        0x8A: "Manufacturer code",
+        0x8B: "Product code",
+        0x8C: "Production number",
+        0x8D: "Production date",
+        0x8F: "Power-saving operation setting",
+        0x90: "ON timer reservation setting",
+        0x91: "ON timer time setting",
+        0x92: "ON timer relative time setting",
+        0x93: "Remote control setting",
+        0x94: "OFF timer reservation setting",
+        0x95: "OFF timer time setting",
+        0x96: "OFF timer relative time setting",
+        0x97: "Current time setting",
+        0x98: "Current date setting",
+        0x99: "Power limit setting",
+        0x9A: "Cumulative operating time",
+        0x9B: "SetM property map",
+        0x9C: "GetM property map",
+        0x9D: "Status change announcement property map",
+        0x9E: "Set property map",
+        0x9F: "Get property map",
+        0xBD: "Fault description",
+        0xE0: "System interconnection status",
+        0xE1: "Measured instantaneous amount of electricity generated",
+        0xE2: "Measured cumulative amount of electric energy generated",
+        0xE3: "Maximum amount of electricity that can be sold",
+        0xE4: "Maximum amount of electricity that can be bought",
+        0xE5: "Measurement time of instantaneous power generation",
+        0xE6: "Power generation output limit setting 2",
+        0xE7: "Limit setting for the amount of electricity sold",
+        0xE8: "Rated power generation output",
+        0xE9: "Power generation operation setting",
+        0xC0: "Operation power factor setting value",
+        0xC1: "FIT contract type",
+        0xC2: "Self-consumption type",
+        0xC3: "Capacity approved by equipment",
+        0xC4: "Conversion coefficient",
+        0xD0: "System interconnection status",
+        0xD1: "Output power restraint status",
+        0xB0: "Output power controlling schedule",
+        0x89: "Fault description",
+        0xA0: "Output power control setting 1",
+        0xA1: "Output power control setting 2",
+        0xA2: "Function to control purchase of excess electricity setting",
+        0xB1: "Next access date and time",
+        0xB2: "Type for function to control purchase of excess electricity",
+        0xB3: "Output power change time setting value",
+        0xB4: "Upper limit clip setting value",
+        # Add more EPCs as needed from Annex 1
+    }
+
     def __init__(self, ip, port=3610, seoj=(0x05, 0xFF, 0x01), deoj=(0x02, 0x79, 0x01)):
         self.ip = ip
         self.port = port

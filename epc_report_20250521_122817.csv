@@ -1,0 +1,36 @@
+EPC,Description,Value
+0x80,Operation status,31
+0x81,Installation location,00
+0x82,Standard version information,00005202
+0x83,Identification number,FE00000800000000000000000030303030
+0x88,Fault status,42
+0x89,Fault description,0000
+0x8A,Manufacturer code,000008
+0x8C,Production number,000000000000000000000000
+0x97,Current time setting,101C
+0x98,Current date setting,07E90515
+0x9D,Status change announcement property map,04808188B1
+0x9E,Set property map,0E819798A0A1A2C1E2E4E5E6E7E8E9
+0xA0,Output power control setting 1,00
+0xA1,Output power control setting 2,0000
+0xA2,Function to control purchase of excess electricity setting,41
+0xB0,Output power controlling schedule,07E90515FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+0xB1,Next access date and time,FFFFFFFFFFFFFF
+0xB2,Type for function to control purchase of excess electricity,41
+0xB3,Output power change time setting value,003C
+0xB4,Upper limit clip setting value,FFFF
+0xC0,Operation power factor setting value,62
+0xC1,FIT contract type,43
+0xC2,Self-consumption type,41
+0xC3,Capacity approved by equipment,157C
+0xC4,Conversion coefficient,64
+0xD0,System interconnection status,00
+0xD1,Output power restraint status,44
+0xE0,System interconnection status,0003
+0xE1,Measured instantaneous amount of electricity generated,00000008
+0xE3,Maximum amount of electricity that can be sold,00000000
+0xE5,Measurement time of instantaneous power generation,00
+0xE6,Power generation output limit setting 2,0000
+0xE7,Limit setting for the amount of electricity sold,0000
+0xE8,Rated power generation output,157C
+0xE9,Power generation operation setting,157C

@@ -112,25 +112,24 @@ def save_report_pdf(report, filename):
     pdf.cell(0, 10, "ECHONET Lite EPC Query Report", ln=True, align='C')
     pdf.ln(5)
     # Table header
-    headers = ["EPC", "Description", "Query", "Response"]
-    col_widths = [20, 60, 40, 60]
+    headers = ["EPC", "Description", "Response"]
+    col_widths = [20, 80, 80]
     for i, header in enumerate(headers):
         pdf.cell(col_widths[i], 8, header, border=1, align='C')
     pdf.ln()
     # Table rows
     for row in report:
         pdf.cell(col_widths[0], 8, str(row['EPC']), border=1)
-        pdf.cell(col_widths[1], 8, str(row['Description'])[:40], border=1)
-        pdf.cell(col_widths[2], 8, str(row['Query'])[:30], border=1)
+        pdf.cell(col_widths[1], 8, str(row['Description'])[:60], border=1)
         resp = str(row['Response'])
-        if len(resp) > 40:
-            resp = resp[:37] + '...'
-        pdf.cell(col_widths[3], 8, resp, border=1)
+        if len(resp) > 60:
+            resp = resp[:57] + '...'
+        pdf.cell(col_widths[2], 8, resp, border=1)
         pdf.ln()
     pdf.output(filename)
 
 def main():
-    client = EchonetLiteClient('192.168.1.192')
+    client = EchonetLiteClient('192.168.1.35')
     report = []
     # Step 1: Query 0x9F (Get Property Map)
     client.send_query(0x62, 0x9F)
@@ -145,13 +144,13 @@ def main():
     # Step 2: For each EPC, send a Get (0x62) query and record response
     for epc in epc_list:
         client.send_query(0x62, epc)
+        print("DEBUG: sending epc : ",hex(epc))
         epc_resp = client.listen_response()
         desc = EPC_DETAILS.get(epc, "Unknown/Reserved")
         relevant = extract_relevant_response(epc, epc_resp)
         report.append({
             'EPC': f"0x{epc:02X}",
             'Description': desc,
-            'Query': f"Get (0x62) for EPC 0x{epc:02X}",
             'Response': relevant
         })
         print(".")
