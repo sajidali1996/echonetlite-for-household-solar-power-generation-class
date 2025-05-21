@@ -1,9 +1,53 @@
+"""
+EvaluateMapping: ECHONET Lite Property Map Evaluation and PDF Reporting
+
+This script queries ECHONET Lite devices for their property maps (EPC 0x9E and 0x9F), decodes the supported property lists, and generates a professional PDF report summarizing the mapping and descriptions.
+
+Features:
+- Query ECHONET Lite devices for Set Property Map (0x9E) and Get Property Map (0x9F)
+- Decode property map responses (both list and bitmap formats)
+- Cross-reference EPCs with descriptions from EchonetLiteClient.EPC_DETAILS
+- Generate a PDF report with tables for both property maps
+- Utility functions for parsing, description, and credential management
+
+Functions:
+----------
+- get_active_values(nth_byte, bytevalue):
+    Given a byte index and value, returns a list of EPC hex strings for active bits (for bitmap property maps).
+- parse_property_map(edt, is_9f=False):
+    Parses the property map EDT (Format 1: list, Format 2: bitmap) and returns a list of EPC integers.
+- describe_epc_list(epc_list):
+    Returns a table of EPC hex codes and their descriptions.
+- get_ip_from_credentials(filename):
+    Reads the device IP from a credentials file.
+- save_mapping_pdf_report(...):
+    Generates a PDF report summarizing the property maps and their decoded tables.
+- main():
+    Orchestrates the query, parsing, and report generation process.
+
+Usage:
+------
+    python EvaluateMapping.py
+
+This script is designed for automated testing and reporting. All functions are documented for maintainability and extensibility.
+"""
+
 import tabulate
 from enl_class import EchonetLiteClient
 import datetime
 from fpdf import FPDF
-#fix
+
 def get_active_values(nth_byte, bytevalue):
+    """
+    Given a byte index (nth_byte) and a byte value, return a list of EPC hex strings for active bits.
+    Used for decoding bitmap property maps (Format 2) in ECHONET Lite.
+
+    Args:
+        nth_byte (int): Index of the byte (0-15).
+        bytevalue (int): Value of the byte (0-255).
+    Returns:
+        list of str: List of EPC hex strings (e.g., ['80', '81', ...])
+    """
     table = {
         (row, bit): (0x80 | bit << 4 | row)  # auto generate if pattern holds
         for row in range(16)
@@ -27,9 +71,15 @@ def get_active_values(nth_byte, bytevalue):
 def parse_property_map(edt, is_9f=False):
     """
     Parse property map (EDT) for ECHONET Lite (EPC 0x9F, 0x9E, etc.)
-    For 0x9F, use get_active_values for each byte in the bitmap.
-    For 0x9E, use standard logic.
-    Returns a list of EPC integers.
+    Handles both Format 1 (list of EPCs) and Format 2 (bitmap).
+
+    Args:
+        edt (bytes or list of int): Property map EDT.
+        is_9f (bool): True if parsing 0x9F (Get Property Map), uses get_active_values.
+    Returns:
+        list of int: List of EPC codes supported.
+    Raises:
+        ValueError: If property map format or length is invalid.
     """
     #print the length of edt
     #print(f"parse_property_map: length of edt={len(edt)}")
@@ -62,6 +112,14 @@ def parse_property_map(edt, is_9f=False):
         raise ValueError("Invalid property map format or length")
 
 def describe_epc_list(epc_list):
+    """
+    Given a list of EPC codes, return a table of EPC hex codes and their descriptions.
+
+    Args:
+        epc_list (list of int): List of EPC codes.
+    Returns:
+        list of dict: Each dict has 'EPC' and 'Description'.
+    """
     table = []
     for epc in epc_list:
         # epc_list now contains integers, not hex strings
@@ -70,6 +128,16 @@ def describe_epc_list(epc_list):
     return table
 
 def get_ip_from_credentials(filename='credentials.txt'):
+    """
+    Read the device IP address from a credentials file.
+
+    Args:
+        filename (str): Path to credentials file (default: 'credentials.txt').
+    Returns:
+        str: IP address.
+    Raises:
+        ValueError: If IP is not found in the file.
+    """
     with open(filename, 'r') as f:
         for line in f:
             if line.startswith('IP='):
@@ -77,6 +145,18 @@ def get_ip_from_credentials(filename='credentials.txt'):
     raise ValueError('IP not found in credentials file')
 
 def save_mapping_pdf_report(n9e_table, n9f_table, n9e_epc, n9e_resp, n9f_epc, n9f_resp, filename):
+    """
+    Generate a PDF report summarizing the Set Property Map (0x9E) and Get Property Map (0x9F).
+
+    Args:
+        n9e_table (list of dict): Decoded 0x9E property map table.
+        n9f_table (list of dict): Decoded 0x9F property map table.
+        n9e_epc (int): EPC code for 0x9E.
+        n9e_resp (str): Raw response for 0x9E.
+        n9f_epc (int): EPC code for 0x9F.
+        n9f_resp (str): Raw response for 0x9F.
+        filename (str): Output PDF filename.
+    """
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=14)
@@ -142,6 +222,9 @@ def save_mapping_pdf_report(n9e_table, n9f_table, n9e_epc, n9e_resp, n9f_epc, n9
     pdf.output(filename)
 
 def main():
+    """
+    Main entry point: queries the device, decodes property maps, and generates a PDF report.
+    """
     ip = get_ip_from_credentials()
     client = EchonetLiteClient(ip)
     property_maps = [

@@ -1,3 +1,34 @@
+"""
+epc_report_comparison.py: Compare Latest and Default EPC Reports and Generate PDF Summary
+
+This script compares the latest EPC report (CSV) with a default/reference EPC report, highlighting differences in property values, and generates a professional PDF summary for documentation and analysis.
+
+Features:
+---------
+- Locates the latest and default EPC report CSV files
+- Compares EPC values and flags differences
+- Generates a PDF report with a side-by-side comparison and status
+- Automatically generates the latest report if missing
+- Handles missing files and directories gracefully
+
+Functions:
+----------
+- find_latest_csv(folder):
+    Finds the most recent EPC report CSV in the specified folder.
+- read_csv_rows(filepath):
+    Reads EPC, description, and value rows from a CSV file.
+- make_comparison_table(latest, default):
+    Builds a table comparing latest and default values, flagging differences.
+- save_comparison_pdf(table, filename):
+    Saves the comparison table as a formatted PDF report.
+
+Usage:
+------
+    python epc_report_comparison.py
+
+This script is designed for automated regression testing and reporting. All functions are documented for maintainability and extensibility.
+"""
+
 import os
 import csv
 from fpdf import FPDF
@@ -5,6 +36,14 @@ import datetime
 import subprocess
 
 def find_latest_csv(folder):
+    """
+    Find the most recent EPC report CSV in the specified folder.
+
+    Args:
+        folder (str): Folder path to search for CSV files.
+    Returns:
+        str or None: Path to the latest CSV file, or None if not found.
+    """
     files = [f for f in os.listdir(folder) if f.startswith('epc_report_') and f.endswith('.csv')]
     if not files:
         return None
@@ -12,6 +51,14 @@ def find_latest_csv(folder):
     return os.path.join(folder, files[0])
 
 def read_csv_rows(filepath):
+    """
+    Read EPC, description, and value rows from a CSV file.
+
+    Args:
+        filepath (str): Path to the CSV file.
+    Returns:
+        list of tuple: Each tuple is (EPC, Description, Value).
+    """
     rows = []
     with open(filepath, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -20,6 +67,15 @@ def read_csv_rows(filepath):
     return rows
 
 def make_comparison_table(latest, default):
+    """
+    Build a table comparing latest and default EPC values, flagging differences.
+
+    Args:
+        latest (list of tuple): Latest EPC report rows.
+        default (list of tuple): Default/reference EPC report rows.
+    Returns:
+        list of dict: Each dict has EPC, Description, Latest Value, Default Value, and Status.
+    """
     table = []
     for l, d in zip(latest, default):
         diff = '' if l[2] == d[2] else 'DIFFERENT'
@@ -33,6 +89,13 @@ def make_comparison_table(latest, default):
     return table
 
 def save_comparison_pdf(table, filename):
+    """
+    Save the comparison table as a formatted PDF report.
+
+    Args:
+        table (list of dict): Comparison table rows.
+        filename (str): Output PDF filename.
+    """
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=14)

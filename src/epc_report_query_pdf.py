@@ -1,3 +1,36 @@
+"""
+epc_report_query_pdf.py: Query ECHONET Lite EPCs and Generate PDF Report
+
+This script queries a set of ECHONET Lite device properties (EPCs), collects their values and descriptions, and generates a professional PDF report for documentation and analysis.
+
+Features:
+---------
+- Queries a predefined list of EPCs from an ECHONET Lite device
+- Uses EchonetLiteClient for communication and EPC description lookup
+- Handles missing or unresponsive EPCs gracefully
+- Outputs a PDF report with EPC, description, and value in a formatted table
+- Prints a tabulated summary to the console
+
+Functions:
+----------
+- describe_epc(epc, edt):
+    Returns a dictionary with EPC hex, description, and value (or 'No response').
+- get_ip_from_credentials(filename):
+    Reads the device IP from a credentials file.
+- wrap_text(text, width):
+    Wraps text to a specified width for PDF cell formatting.
+- save_report_as_pdf(report, filename):
+    Saves the report (list of dicts) as a PDF file with a formatted table.
+- main():
+    Orchestrates the query, reporting, and PDF export process.
+
+Usage:
+------
+    python epc_report_query_pdf.py
+
+This script is designed for automated reporting and easy integration with test frameworks. All functions are documented for maintainability and extensibility.
+"""
+
 import tabulate
 from enl_class import EchonetLiteClient
 import datetime
@@ -9,6 +42,15 @@ EPCS = [
 ]
 
 def describe_epc(epc, edt):
+    """
+    Return a dictionary with EPC hex, description, and value (or 'No response').
+
+    Args:
+        epc (int): EPC code.
+        edt (bytes or None): Property value.
+    Returns:
+        dict: {'EPC', 'Description', 'Value'}
+    """
     desc = EchonetLiteClient.EPC_DETAILS.get(epc, "Unknown/Reserved")
     if edt is None:
         return {'EPC': f'0x{epc:02X}', 'Description': desc, 'Value': 'No response'}
@@ -17,6 +59,16 @@ def describe_epc(epc, edt):
     return {'EPC': f'0x{epc:02X}', 'Description': desc, 'Value': value}
 
 def get_ip_from_credentials(filename='credentials.txt'):
+    """
+    Read the device IP address from a credentials file.
+
+    Args:
+        filename (str): Path to credentials file (default: 'credentials.txt').
+    Returns:
+        str: IP address.
+    Raises:
+        ValueError: If IP is not found in the file.
+    """
     with open(filename, 'r') as f:
         for line in f:
             if line.startswith('IP='):
@@ -24,10 +76,26 @@ def get_ip_from_credentials(filename='credentials.txt'):
     raise ValueError('IP not found in credentials file')
 
 def wrap_text(text, width):
+    """
+    Wrap text to a specified width for PDF cell formatting.
+
+    Args:
+        text (str): The text to wrap.
+        width (int): The maximum width of each line.
+    Returns:
+        str: Wrapped text with newlines.
+    """
     import textwrap
     return '\n'.join(textwrap.wrap(str(text), width=width))
 
 def save_report_as_pdf(report, filename):
+    """
+    Save the EPC report as a PDF file with a formatted table.
+
+    Args:
+        report (list of dict): List of EPC report rows.
+        filename (str): Output PDF filename.
+    """
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -63,6 +131,9 @@ def save_report_as_pdf(report, filename):
     pdf.output(filename)
 
 def main():
+    """
+    Main entry point: queries EPCs, prints a table, and saves a PDF report.
+    """
     ip = get_ip_from_credentials()
     client = EchonetLiteClient(ip)
     report = []
