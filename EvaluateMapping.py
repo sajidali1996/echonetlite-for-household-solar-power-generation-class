@@ -1,69 +1,7 @@
 import tabulate
 from enl_class import EchonetLiteClient
-# Add this mapping based on Annex 1 and your device class
-EPC_DESCRIPTIONS = {
-    0x80: "Operation status",
-    0x81: "Installation location",
-    0x82: "Standard version information",
-    0x83: "Identification number",
-    0x88: "Fault status",
-    0x8A: "Manufacturer code",
-    0x8B: "Product code",
-    0x8C: "Production number",
-    0x8D: "Production date",
-    0x8F: "Power-saving operation setting",
-    0x90: "ON timer reservation setting",
-    0x91: "ON timer time setting",
-    0x92: "ON timer relative time setting",
-    0x93: "Remote control setting",
-    0x94: "OFF timer reservation setting",
-    0x95: "OFF timer time setting",
-    0x96: "OFF timer relative time setting",
-    0x97: "Current time setting",
-    0x98: "Current date setting",
-    0x99: "Power limit setting",
-    0x9A: "Cumulative operating time",
-    0x9B: "SetM property map",
-    0x9C: "GetM property map",
-    0x9D: "Status change announcement property map",
-    0x9E: "Set property map",
-    0x9F: "Get property map",
-    0xBD: "Fault description",
-    0xE0: "System interconnection status",
-    0xE1: "Measured instantaneous amount of electricity generated",
-    0xE2: "Measured cumulative amount of electric energy generated",
-    0xE3: "Maximum amount of electricity that can be sold",
-    0xE4: "Maximum amount of electricity that can be bought",
-    0xE5: "Measurement time of instantaneous power generation",
-    0xE6: "Power generation output limit setting 2",
-    0xE7: "Limit setting for the amount of electricity sold",
-    0xE8: "Rated power generation output",
-    0xE9: "Power generation operation setting",
-    0xC0: "Operation power factor setting value",
-    0xC1: "FIT contract type",
-    0xC2: "Self-consumption type",
-    0xC3: "Capacity approved by equipment",
-    0xC4: "Conversion coefficient",
-    0xD0: "System interconnection status",
-    0xD1: "Output power restraint status",
-    0xB0: "Output power controlling schedule",
-    0x89: "Fault description",
-    0xA0: "Output power control setting 1",
-    0xA1: "Output power control setting 2",
-    0xA2: "Function to control purchase of excess electricity setting",
-    0xB1: "Next access date and time",
-    0xB2: "Type for function to control purchase of excess electricity",
-    0xB3: "Output power change time setting value",
-    0xB4: "Upper limit clip setting value",
-
-
-
-
-
-    
-    # Add more EPCs as needed from Annex 1
-}
-
+import datetime
+from fpdf import FPDF
 #fix
 def get_active_values(nth_byte, bytevalue):
     table = {
@@ -122,6 +60,7 @@ def parse_property_map(edt, is_9f=False):
             return epcs
     else:
         raise ValueError("Invalid property map format or length")
+
 def describe_epc_list(epc_list):
     table = []
     for epc in epc_list:
@@ -137,6 +76,60 @@ def get_ip_from_credentials(filename='credentials.txt'):
                 return line.strip().split('=', 1)[1]
     raise ValueError('IP not found in credentials file')
 
+def save_mapping_pdf_report(n9e_table, n9f_table, filename):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=14)
+    pdf.cell(0, 12, txt="Echonet lite mapping evaluation", ln=True, align='C')
+    pdf.set_font("Arial", size=11)
+    pdf.cell(0, 10, txt=f"Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True, align='C')
+    pdf.ln(8)
+    # Table for 0x9E
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, 'Set Property Map (0x9E)', ln=True)
+    pdf.set_font("Arial", 'B', 10)
+    pdf.cell(40, 10, 'EPC', 1)
+    pdf.cell(120, 10, 'Description', 1)
+    pdf.ln()
+    pdf.set_font("Arial", size=10)
+    for row in n9e_table:
+        epc = row['EPC']
+        desc = row['Description']
+        # Wrap description if too long
+        desc_lines = []
+        while len(desc) > 60:
+            desc_lines.append(desc[:60])
+            desc = desc[60:]
+        desc_lines.append(desc)
+        max_lines = len(desc_lines)
+        for i in range(max_lines):
+            pdf.cell(40, 10, epc if i == 0 else '', 1)
+            pdf.cell(120, 10, desc_lines[i], 1)
+            pdf.ln()
+    pdf.ln(5)
+    # Table for 0x9F
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, 'Get Property Map (0x9F)', ln=True)
+    pdf.set_font("Arial", 'B', 10)
+    pdf.cell(40, 10, 'EPC', 1)
+    pdf.cell(120, 10, 'Description', 1)
+    pdf.ln()
+    pdf.set_font("Arial", size=10)
+    for row in n9f_table:
+        epc = row['EPC']
+        desc = row['Description']
+        desc_lines = []
+        while len(desc) > 60:
+            desc_lines.append(desc[:60])
+            desc = desc[60:]
+        desc_lines.append(desc)
+        max_lines = len(desc_lines)
+        for i in range(max_lines):
+            pdf.cell(40, 10, epc if i == 0 else '', 1)
+            pdf.cell(120, 10, desc_lines[i], 1)
+            pdf.ln()
+    pdf.output(filename)
+
 def main():
     ip = get_ip_from_credentials()
     client = EchonetLiteClient(ip)
@@ -144,10 +137,11 @@ def main():
         (0x9E, 'Set Property Map'),
         (0x9F, 'Get Property Map'),
     ]
+    n9e_table = []
+    n9f_table = []
     for epc, label in property_maps:
         client.send_query(0x62, epc)
         resp = client.listen_response()
-        print(resp)
         edt = None
         if 'properties' in resp:
             for prop in resp['properties']:
@@ -156,13 +150,14 @@ def main():
                     break
         if epc == 0x9F:
             epc_list = parse_property_map(edt, is_9f=True) if edt else []
+            n9f_table = describe_epc_list(epc_list)
         else:
             epc_list = parse_property_map(edt, is_9f=False) if edt else []
-        if epc_list:
-            print("Decoded EPCs:", " ".join(f"{epc:02X}" for epc in epc_list))
-        desc_table = describe_epc_list(epc_list)
-        print(f"\n{label} (EPC 0x{epc:02X}):")
-        print(tabulate.tabulate(desc_table, headers='keys'))
+            n9e_table = describe_epc_list(epc_list)
+    now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    pdf_filename = f'mapping_evaluation_{now}.pdf'
+    save_mapping_pdf_report(n9e_table, n9f_table, pdf_filename)
+    print(f"PDF report saved as {pdf_filename}")
     client.close()
 
 if __name__ == '__main__':
