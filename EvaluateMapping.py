@@ -130,8 +130,16 @@ def describe_epc_list(epc_list):
         table.append({'EPC': f'0x{epc:02X}', 'Description': desc})
     return table
 
+def get_ip_from_credentials(filename='credentials.txt'):
+    with open(filename, 'r') as f:
+        for line in f:
+            if line.startswith('IP='):
+                return line.strip().split('=', 1)[1]
+    raise ValueError('IP not found in credentials file')
+
 def main():
-    client = EchonetLiteClient('192.168.1.192')
+    ip = get_ip_from_credentials()
+    client = EchonetLiteClient(ip)
     property_maps = [
         (0x9E, 'Set Property Map'),
         (0x9F, 'Get Property Map'),
