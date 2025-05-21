@@ -1,5 +1,5 @@
 import tabulate
-from enl_class import EchonetLiteClient
+from src.enl_class import EchonetLiteClient
 from fpdf import FPDF
 import time
 

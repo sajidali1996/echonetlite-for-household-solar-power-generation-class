@@ -1,6 +1,6 @@
 #using enl_class write an example code to query the operation status of the device
 # and print the response
-import enl_class as enl
+import src.enl_class as enl
 
 if __name__ == "__main__":
     # Create an instance of the EchonetLiteClient
