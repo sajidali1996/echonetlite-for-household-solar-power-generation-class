@@ -142,7 +142,7 @@ def main():
     report = []
     for epc in EPCS:
         client.send_query(0x62, epc)
-        resp = client.listen_response()
+        resp = client.listen_response(timeout=2)
         edt = None
         if 'properties' in resp:
             for prop in resp['properties']:
