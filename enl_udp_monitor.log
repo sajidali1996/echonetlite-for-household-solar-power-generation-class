@@ -1,0 +1,27 @@
+--- ENL UDP Monitor started at 2025-05-26 11:51:34.821819 ---
+[2025-05-26 12:06:26.282595] in 192.168.1.61 TID=1 ESV=0x72 UNMATCHED RESPONSE
+  SEOJ=(14, 240, 1) DEOJ=(5, 255, 1)
+  OPC=1 PROPS=[{'epc': '0xD6', 'pdc': 7, 'edt': '02027901027d01'}]
+  RAW=108100010ef00105ff017201d60702027901027d01
+  ALERT: Response with TID 1 has no matching request.
+[2025-05-26 12:06:26.284054] in 192.168.1.35 TID=1 ESV=0x72 UNMATCHED RESPONSE
+  SEOJ=(14, 240, 1) DEOJ=(5, 255, 1)
+  OPC=1 PROPS=[{'epc': '0xD6', 'pdc': 7, 'edt': '02027901027d01'}]
+  RAW=108100010ef00105ff017201d60702027901027d01
+  ALERT: Response with TID 1 has no matching request.
+[2025-05-26 12:06:26.284054] in 192.168.1.192 TID=1 ESV=0x72 UNMATCHED RESPONSE
+  SEOJ=(14, 240, 1) DEOJ=(5, 255, 1)
+  OPC=1 PROPS=[{'epc': '0xD6', 'pdc': 7, 'edt': '02027901027d01'}]
+  RAW=108100010ef00105ff017201d60702027901027d01
+  ALERT: Response with TID 1 has no matching request.
+[2025-05-26 12:06:26.504441] in 192.168.1.44 TID=1 ESV=0x72 UNMATCHED RESPONSE
+  SEOJ=(14, 240, 1) DEOJ=(5, 255, 1)
+  OPC=1 PROPS=[{'epc': '0xD6', 'pdc': 7, 'edt': '02027901027d01'}]
+  RAW=108100010ef00105ff017201d60702027901027d01
+  ALERT: Response with TID 1 has no matching request.
+--- ENL UDP Monitor stopped ---
+--- ENL UDP Monitor started at 2025-05-27 15:47:20.050780 ---
+--- ENL UDP Monitor stopped ---
+--- ENL UDP Monitor started at 2025-05-27 16:33:40.848515 ---
+--- ENL UDP Monitor started at 2025-05-29 11:08:25.999775 ---
+--- ENL UDP Monitor stopped ---
