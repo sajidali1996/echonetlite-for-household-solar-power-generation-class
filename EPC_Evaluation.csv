@@ -1,0 +1,45 @@
+EPC,Description,Value
+0x80,Operation status,30
+0x81,Installation location,00
+0x82,Standard version information,00005202
+0x83,Identification number,FE00000739393030303030393130303030
+0x88,Fault status,41
+0x89,Fault description,0000
+0x8A,Manufacturer code,000007
+0x8C,Production number,455341322D323432534B3031
+0x97,Current time setting,1300
+0x98,Current date setting,07E90618
+0x9D,Status change announcement property map,09808188AAABC1C2CFDA
+0x9E,Set property map,0A819798AAABC1C2DAEBEC
+0x9F,Get property map,2C25357525646460023715256441020212
+0xA0,AC effective capacity (charging),000025E8
+0xA1,AC effective capacity (discharging),000025E8
+0xA2,AC chargeable capacity,000025E8
+0xA3,AC dischargeable capacity,000025E8
+0xA4,AC chargeable electric energy,00001C6E
+0xA5,AC dischargeable electric energy,00001C6E
+0xA8,AC cumulative charging electric energy,000004BA
+0xA9,AC cumulative discharging electric energy,00000127
+0xAA,AC charge amount target value,00000000
+0xAB,AC discharge amount target value,00000000
+0xC1,Charging method,02
+0xC2,Discharging method,02
+0xC8,Min/max charging electric power,0000000000002022
+0xC9,Min/max discharging electric power,0000000000000000
+0xCF,Working operation status,44
+0xD0,Rated Electric Energy,0000224A
+0xD1,Rated Capacity,0259
+0xD2,Rated voltage,009A
+0xD3,Measured instantaneous charging/discharging electric power,00000000
+0xD4,Measured instantaneous charging/discharging current,0000
+0xD5,Measured instantaneous charging/discharging voltage,009E
+0xD6,Measured cumulative discharging electric energy,00000000
+0xD8,Measured cumulative charging electric energy,00000001
+0xDA,Operation mode setting,46
+0xDB,System interconnection status,01
+0xE2,Remaining stored electricity 1,00000903
+0xE4,Remaining stored electricity 1,19
+0xE5,Battery state of health,64
+0xE6,Battery type,04
+0xEB,Charging electric power setting,00000000
+0xEC,Discharging electric power setting,00000000

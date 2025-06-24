@@ -1,0 +1,45 @@
+EPC,Description,Value
+0xD0,System interconnection status,0000224A
+0xA0,Output power control setting 1,0
+0x80,Operation status,31
+0xD1,Output power restraint status,259
+0xC1,Charging method,2
+0xA1,Output power control setting 2,0
+0x81,Installation location,0
+0xE2,Measured cumulative amount of electric energy generated,0
+0xD2,Rated voltage,009A
+0xC2,Discharging method,2
+0xA2,Function to control purchase of excess electricity setting,0
+0x82,Standard version information,5202
+0xD3,Measured instantaneous charging/discharging electric power,0
+0xA3,AC dischargeable capacity,0
+0x83,Identification number,FE00000700000000000000000030303030
+0xE4,Maximum amount of electricity that can be bought,0
+0xD4,Measured instantaneous charging/discharging current,FFA6
+0xA4,AC chargeable electric energy,0
+0xE5,Measurement time of instantaneous power generation,0
+0xD5,Measured instantaneous charging/discharging voltage,9
+0xA5,AC dischargeable electric energy,0
+0xE6,Power generation output limit setting 2,4
+0xD6,Measured cumulative discharging electric energy,2
+0x97,Current time setting,1303
+0xD8,Measured cumulative charging electric energy,4
+0xC8,Minimum/maximum charging electric power,0
+0xA8,AC cumulative charging electric energy,1393
+0x98,Current date setting,07E90618
+0x88,Fault status,41
+0xC9,Minimum/maximum discharging electri power,0
+0xA9,AC cumulative discharging electric energy,000008CE
+0x89,Fault description,0
+0xDA,Operation mode setting,46
+0xAA,AC charge amount target value,0
+0x8A,Manufacturer code,7
+0xEB,Charging electric power setting,0
+0xDB,System interconnection status,1
+0xAB,AC discharge amount target value,0
+0xEC,Discharging electric power setting,0
+0x8C,Production number,455341322D323432534B3031
+0x9D,Status change announcement property map,09808188AAABC1C2CFDA
+0x9E,Set property map,0A819798AAABC1C2DAEBEC
+0xCF,Working operation status,44
+0x9F,Get property map,2C25357525646460023715256441020212
