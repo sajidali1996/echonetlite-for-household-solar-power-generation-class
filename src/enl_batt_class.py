@@ -466,10 +466,10 @@ class EchonetLiteClient:
 
 if __name__ == "__main__":
     # Example usage
-    client = EchonetLiteClient('192.168.1.192')
-    print(client.get_operation_status())
-    client.close()
-                               
+   # client = EchonetLiteClient('192.168.1.192')
+    #print(client.get_operation_status())
+    #client.close()
+    print("main")                           
 # Example usage:
 # client = EchonetLiteClient('192.168.1.192')
 # print(client.get_operation_status())
