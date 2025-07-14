@@ -1,0 +1,45 @@
+EPC,Description,Value
+0xD0,System interconnection status,0000240E
+0xA0,AC effective capacity(charging),000025E8
+0x80,Operation status,30
+0xD1,Rated capacity,0259
+0xC1,Charging method,02
+0xA1,AC effective capacity(discharging),000025E8
+0x81,Installation location,00
+0xE2,Measured cumulative amount of electric energy generated,00002016
+0xD2,Rated voltage,009A
+0xC2,Discharging method,02
+0xA2,Function to control purchase of excess electricity setting,000025E8
+0x82,Standard version information,00005202
+0xD3,Measured instantaneous charging/discharging electric power,FFFFFFFC
+0xA3,AC dischargeable capacity,000025E8
+0x83,Identification number,FE00000732353237303030383830303030
+0xE4,Maximum amount of electricity that can be bought,59
+0xD4,Measured instantaneous charging/discharging current,0000
+0xA4,AC chargeable electric energy,0000042B
+0xE5,Measurement time of instantaneous power generation,64
+0xD5,Measured instantaneous charging/discharging voltage,009E
+0xA5,AC dischargeable electric energy,0000042B
+0xE6,Power generation output limit setting 2,04
+0xD6,Measured cumulative discharging electric energy,00000715
+0x97,Current time setting,1407
+0xD8,Measured cumulative charging electric energy,000006F5
+0xC8,Minimum/maximum charging electric power,0000000000000000
+0xA8,AC cumulative charging electric energy,00000751
+0x98,Current date setting,07E9070E
+0x88,Fault status,41
+0xC9,Minimum/maximum discharging electri power,0000000000000000
+0xA9,AC cumulative discharging electric energy,000006BC
+0x89,Fault description,0000
+0xDA,Operation mode setting,46
+0xAA,AC charge amount target value,00000000
+0x8A,Manufacturer code,000007
+0xEB,Charging electric power setting,00000000
+0xDB,System interconnection status,01
+0xAB,AC discharge amount target value,00000000
+0xEC,Discharging electric power setting,00000000
+0x8C,Production number,455341322D323432534B3031
+0x9D,Status change announcement property map,09808188AAABC1C2CFDA
+0x9E,Set property map,0A819798AAABC1C2DAEBEC
+0xCF,Working operation status,44
+0x9F,Get property map,2C25357525646460023715256441020212
