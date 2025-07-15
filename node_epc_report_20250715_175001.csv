@@ -1,0 +1,17 @@
+EPC,Description,Value
+0x80,Operating status,31
+0x82,Version information,010D0100
+0x83,Identification number,FE00000732353237303030383630303030
+0x88,Fault status,
+0x8A,Manufacturer code,000007
+0x8C,Product code,
+0x8D,Production number,
+0x8E,Production date,
+0x9D,Status change announcement property map,0280D5
+0x9E,Set property map,00
+0x9F,Get property map,0B8082838A9D9E9FD3D4D6D7
+0xD3,Number of self-node instances,000002
+0xD4,Number of self-node classes,0003
+0xD5,Instance list notification,
+0xD6,Self-node instance list S,02027901027D01
+0xD7,Self-node class list S,020279027D

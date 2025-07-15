@@ -61,56 +61,25 @@ import struct
 class EchonetLiteClient:
     # Detailed EPC descriptions from user-provided table
     EPC_DETAILS = {
-        0x80: "Operation status",
-        0x81: "Installation location",
-        0x82: "Standard version information",
+        0x80: "Operating status",
+        0x82: "Version information",
         0x83: "Identification number",
         0x88: "Fault status",
-        0x89: "Fault description",
         0x8A: "Manufacturer code",
         0x8C: "Product code",
-        0x97: "Current time setting",
-        0x98: "Current date setting",
+        0x8D: "Production number",
+        0x8E: "Production date",
         0x9D: "Status change announcement property map",
         0x9E: "Set property map",
         0x9F: "Get property map",
-        0xA0: "AC effective capacity(charging)",
-        0xA1: "AC effective capacity(discharging)",
-        0xA2: "AC chargeable capacity",
-        0xA3: "AC dischargeable capacity",
-        0xA4: "AC chargeable electric energy",
-        0xA5: "AC dischargeable electric energy",
-        0xA8: "AC cumulative charging electric energy",
-        0xA9: "AC cumulative discharging electric energy",
-        0xAA: "AC charge amount target value",
-        0xAB: "AC discharge amount target value",
-        0xC1: "Charging method",
-        0xC2: "Discharging method",
-        0xC8: "Minimum/maximum charging electric power",
-        0xC9: "Minimum/maximum discharging electric power",
-        0xCF: "Working operation status",
-        0xD0: "Rated electric energy",
-        0xD1: "Rated capacity",
-        0xD2: "Rated voltage",
-        0xD3: "Measured instantaneous charging/discharging electric power",
-        0xD4: "Measured instantaneous charging/discharging current",
-        0xD5: "Measured instantaneous charging/discharging voltage",
-        0xD6: "Measured cumulative discharging electric energy",
-        0xD8: "Measured cumulative charging electric energy",
-        0xDA: "Operation mode setting",
-        0xDB: "System interconnection status",
-        0xE2: "Remaining stored electricity 1",
-        0xE4: "Remaining stored electricity 3",
-        0xE5: "Battery State Of Health (SOH)",
-        0xE6: "Battery type",
-        0xEB: "Charging electric power setting",
-        0xEC: "Discharging electric power setting",
+        0xD3: "Number of self-node instances",
+        0xD4: "Number of self-node classes",
+        0xD5: "Instance list notification",
+        0xD6: "Self-node instance list S",
+        0xD7: "Self-node class list S",
     }
-   
- 
 
-
-    def __init__(self, ip, port=3610, seoj=(0x05, 0xFF, 0x01), deoj=(0x02, 0x7D, 0x01)):
+    def __init__(self, ip, port=3610, seoj=(0x05, 0xFF, 0x01), deoj=(0x0E, 0xF0, 0x01)):
         """
         Initialize the EchonetLiteClient.
 
@@ -466,10 +435,10 @@ class EchonetLiteClient:
 
 if __name__ == "__main__":
     # Example usage
-   # client = EchonetLiteClient('192.168.1.192')
-    #print(client.get_operation_status())
-    #client.close()
-    print("main")                           
+    client = EchonetLiteClient('192.168.1.192')
+    print(client.get_operation_status())
+    client.close()
+                               
 # Example usage:
 # client = EchonetLiteClient('192.168.1.192')
 # print(client.get_operation_status())

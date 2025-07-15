@@ -19,7 +19,7 @@ Usage:
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
-from enl_node_class import EchonetLiteNodeClient
+from enl_node_class import EchonetLiteClient as EchonetLiteNodeClient
 import tabulate
 import datetime
 import csv
